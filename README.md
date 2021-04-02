@@ -1,6 +1,6 @@
 # sourcream-utils
 
--add discord-player
--add giveaway feature
--add meme feature
--add chatbot feature
+-add discord-player<br>  
+-add giveaway feature<br>  
+-add meme feature<br>  
+-add chatbot feature<br>  
