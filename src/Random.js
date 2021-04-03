@@ -1,8 +1,15 @@
-const { chatBot } = require('reconlx');
-
-chatbot (message,input) {
-    if(!message) throw new TypeError("No message or message.channel was provided")
-    if(!input) throw new TypeError("No input (input to give) was provided")
-  chatBot(message, input);
-
+async chatBot(message, input, uuid = 0101) {
+    if (!message)
+        throw new ReferenceError('sourcream-utils => "message" is not defined');
+    if (!input) throw new ReferenceError('sourcream-utils => "input" is not defined');
+    const fetch = require("node-fetch");
+    fetch(
+        `https://api.monkedev.com/fun/chat?msg=${encodeURIComponent(
+            input
+        )}&uid=${uuid}`
+    )
+        .then((res) => res.json())
+        .then(async (json) => {
+            return message.reply(json.response);
+        });
 }
