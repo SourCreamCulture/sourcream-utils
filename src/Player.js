@@ -10,6 +10,8 @@ const Util = require('./Util')
 const { EventEmitter } = require('events')
 const Client = new soundcloud.Client()
 const { VimeoExtractor, DiscordExtractor, FacebookExtractor, ReverbnationExtractor } = require('./Extractors/Extractor')
+const geniusLyrics = require('genius-lyrics')
+const gClient = new geniusLyrics.Client(process.env.GENIUSAPI)
 
 /**
  * @typedef Filters
@@ -439,6 +441,28 @@ class Player extends EventEmitter {
     seek (message, time) {
         return this.setPosition(message, time)
     }
+
+        /**
+     * Fetches the lyrics of the current song
+     * @param {Discord.Message} message Discord message
+     * @param {string} query, or the current song if left undefined
+     * @returns {string} lyrics
+     *      * @example
+     * client.player.lyrics(message);
+     * client.player.lyrics(message, 'Bitch Lasagna');
+     */
+    async lyrics (message, customQuery) {
+        const queue = this.queues.get(message.guild.id)
+        if (!queue && !customQuery) return this.emit('error', 'NotPlaying', message)
+
+        const query = (customQuery) ? customQuery : queue.tracks[0].title
+        const searches = await gClient.songs.search(query).catch((error) => { return (error) })
+        if (!searches) return (undefined)
+        const firstSong = searches[0]
+        const lyrics = await firstSong.lyrics()
+        return (lyrics)
+    }
+
 
     /**
      * Check whether there is a music played in the server
