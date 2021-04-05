@@ -4,10 +4,10 @@ V1.2.0 added chatbot feature<br>
 
 ```js
 // Using Node.js `require()`
-const recon = require("sourcream-utils");
+const sourcream = require("sourcream-utils");
 
 // Using ES6 imports
-import recon from "sourcream-utils";
+import sourcream from "sourcream-utils";
 ```
 
 -add music features (done)<br>  
